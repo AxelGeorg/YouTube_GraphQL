@@ -20,7 +20,16 @@ const typeDefs = `
     }
 
     type Query {
-        channels: [Channel]
+        channels(idChannel: Int): [Channel]
+    }
+
+    input ChannelInput {
+        idChannel: Int,
+        name: String
+    }
+
+    type Mutation {
+        saveChannel(channel: ChannelInput): Channel
     }
 `;
 
@@ -44,7 +53,14 @@ const videos = [
 const resolvers = {
     Query: {
         channels(obj, args) {
-            return channels;
+            return channels.filter((channel) => !args.idChannel || channel.idChannel == args.idChannel);
+        }
+    },
+    Mutation: {
+        saveChannel(obj, args) {
+            const channel = args.channel;
+            channels.push(channel);
+            return channel;
         }
     },
     Channel: {

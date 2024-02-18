@@ -18,6 +18,32 @@ const execute = async function (data){
 (async function() {
     await execute({
         query: `
+            mutation ($channelX: ChannelInput) {
+                saveChannel (channel: $channelX) {
+                    idChannel
+                    name
+                }
+            }
+        `,
+        variables: {
+            channelX: {
+                idChannel: 3,
+                name: "RocketSeat"
+            }
+        }
+    });
+    await execute({
+        query: `
+            mutation {
+                saveChannel (channel: { idChannel: 4, name: "Fabrisio Veronez" }) {
+                    idChannel
+                    name
+                }
+            }
+        `
+    });
+    await execute({
+        query: `
             query {
                 channels {
                     idChannel
@@ -25,6 +51,7 @@ const execute = async function (data){
                     playlists {
                         description
                         videos {
+                            idVideo
                             title
                         }
                     }
